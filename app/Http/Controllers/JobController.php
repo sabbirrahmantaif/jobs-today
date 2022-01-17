@@ -37,8 +37,6 @@ class JobController extends Controller
             $location = request('location');
             $category = request('category');
             $title = request('title');
-
-            file_put_contents('test.txt', $location . " " . $title . " " . $category);
             if ($location || $category || $title) {
                 if (!$location && !$category) {
                     return Job::where('title', $title)->get();
