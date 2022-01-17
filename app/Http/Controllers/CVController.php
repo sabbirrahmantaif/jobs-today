@@ -16,6 +16,7 @@ class CVController extends Controller
             $response = CV::updateOrCreate(
                 ['user_id' => $id],
                 [
+                    'user_id' => $id,
                     "name" => $req->name,
                     "email" => $req->email,
                     "phone" => $req->phone,
@@ -28,9 +29,15 @@ class CVController extends Controller
                     "language_proficiency" => $req->language_proficiency,
                 ]
             );
-            return $response;
+            return [
+                "status"=>200,
+                "data"=>$response
+            ];
         } catch (\Illuminate\Database\QueryException $ex) {
-            return $ex;
+            return [
+                "status"=>500,
+                "data"=>$ex
+            ];
         }
     }
     /**

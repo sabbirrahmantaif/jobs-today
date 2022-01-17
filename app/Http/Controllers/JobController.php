@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
+use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
-    public function host_jobs()
+    public function hot_jobs()
     {
         try {
             $location = request('location');
             $category = request('category');
             $title = request('title');
-            if ($location&&$category&&$title) {
-                return Job::where(['location'=>$location,'title'=>$title,'category'=>$category])->orderBy('id','desc')->get();
+            if ($location||$category||$title) {
+                return DB::select("SELECT *
+                FROM jobs WHERE (location LIKE '$location' OR location IS NULL) AND (title IS NULL OR title LIKE '$title') AND (category IS NULL OR category LIKE '$category')");
+                // return Job::where(['location'=>$location,'title'=>$title,'category'=>$category])->orderBy('id','desc')->get();
             }
             else{
                 return Job::take(15)->orderBy('id','desc')->get();

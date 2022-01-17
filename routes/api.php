@@ -28,7 +28,7 @@ Route::post('/update-profile',[UserController::class,'update_profile']);
 Route::post('/update-image',[UserController::class,'update_image']);
 
 // job controller with job model
-Route::get('/hot-jobs',[JobController::class,'host_jobs']);
+Route::get('/hot-jobs',[JobController::class,'hot_jobs']);
 
 // CV controller with cv model
 Route::post('/update-cv',[CVController::class,'upsert']);
