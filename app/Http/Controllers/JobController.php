@@ -15,13 +15,26 @@ class JobController extends Controller
             $location = request('location');
             $category = request('category');
             $title = request('title');
-            if ($location||$category||$title) {
-                return DB::select("SELECT *
-                FROM jobs WHERE (location LIKE '$location' OR location IS NULL) AND (title IS NULL OR title LIKE '$title') AND (category IS NULL OR category LIKE '$category')");
-                // return Job::where(['location'=>$location,'title'=>$title,'category'=>$category])->orderBy('id','desc')->get();
-            }
-            else{
-                return Job::take(15)->orderBy('id','desc')->get();
+
+            file_put_contents('test.txt', $location . " " . $title . " " . $category);
+            if ($location || $category || $title) {
+                if (!$location && !$category) {
+                    return Job::where('title', $title)->get();
+                } elseif (!$location && !$title) {
+                    return Job::where('category', $category)->get();
+                } elseif (!$category && !$title) {
+                    return Job::where('location', $location)->get();
+                } elseif (!$category) {
+                    return Job::where(['location' => $location, 'title' => $title])->get();
+                } elseif (!$location) {
+                    return Job::where(['category' => $category, 'title' => $title])->get();
+                } elseif (!$title) {
+                    return Job::where(['category' => $category, 'location' => $location])->get();
+                } else {
+                    return Job::where(['category' => $category, 'location' => $location,'title'=>$title])->get();
+                }
+            } else {
+                return Job::take(15)->orderBy('id', 'desc')->get();
             }
         } catch (\Illuminate\Database\QueryException $ex) {
             return $ex;
@@ -44,7 +57,6 @@ class JobController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
