@@ -9,7 +9,7 @@ class PeopleController extends Controller
 {
     public function insert(Request $req)
     {
-        $image = $req->file('image')->store('images');
+        $image = $req->file('image')->store('');
         $user = new People();
         $user->name = $req->name;
         $user->email = $req->email;

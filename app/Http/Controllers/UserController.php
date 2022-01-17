@@ -75,7 +75,7 @@ class UserController extends Controller
         try {
             $user = User::find($req->id);
             Storage::delete($user->image);
-            $file = $req->file('image')->store('public/images');
+            $file = $req->file('image')->store('');
             $user->update(["image" => $file]);
             if ($user) {
                 $response["status"] = 200;

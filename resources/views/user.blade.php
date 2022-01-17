@@ -8,7 +8,7 @@
     @if (session('res'))
         <small>{{ session('res') }}</small>
     @endif
-    <form action="/user" method="post" enctype="multipart/form-data">
+    <form action="{{url('/user')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input placeholder="name" type="text" name="name" id="name">
         <input placeholder="email" type="email" name="email" id="">
@@ -31,7 +31,7 @@
             @foreach ($peoples as $people)
             <tr>
                 <td>{{$people->id}}</td>
-                <td><img src="{{Storage::url($people->image)}}" alt=""></td>
+                <td><img src="{{asset('storage/app/'.$people->image)}}" alt=""></td>
                 <td>{{$people->name}}</td>
                 <td>{{$people->phone}}</td>
                 <td>{{$people->email}}</td>
