@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
-use App\Http\Requests\StoreLocationRequest;
-use App\Http\Requests\UpdateLocationRequest;
+use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
@@ -15,7 +14,8 @@ class LocationController extends Controller
      */
     public function index()
     {
-        return view('location');
+        $locations = Location::orderBy('id','desc')->get();
+        return view('location.index',compact('locations'));
     }
 
     /**
@@ -25,7 +25,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        //
+        return view('location.create');
     }
 
     /**
@@ -34,9 +34,11 @@ class LocationController extends Controller
      * @param  \App\Http\Requests\StoreLocationRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreLocationRequest $request)
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate(["location"=>"required"]);
+        Location::create($data);
+        return redirect()->route('location.index');
     }
 
     /**
@@ -47,7 +49,7 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
-        //
+        return view('location.index',compact('location'));
     }
 
     /**
@@ -58,7 +60,7 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
-        //
+        return view('location.edit',compact('location'));
     }
 
     /**
@@ -68,9 +70,12 @@ class LocationController extends Controller
      * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateLocationRequest $request, Location $location)
+    public function update(Request $request, Location $location)
     {
-        //
+        $request->validate(["location"=>"required"]);
+        $location->location = $request->location;
+        $location->save();
+        return redirect()->route('location.index');
     }
 
     /**
@@ -81,6 +86,7 @@ class LocationController extends Controller
      */
     public function destroy(Location $location)
     {
-        //
+        $location->delete();
+        return back();
     }
 }

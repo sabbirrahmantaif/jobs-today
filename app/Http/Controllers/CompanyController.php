@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Http\Requests\StoreCompanyRequest;
-use App\Http\Requests\UpdateCompanyRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -15,8 +15,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
-        return view('company',['companies'=>$companies]);
+        $companies = Company::orderBy('id', 'desc')->get();
+        return view('company.index', compact('companies'));
     }
 
     /**
@@ -26,7 +26,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('company.create');
     }
 
     /**
@@ -35,9 +35,19 @@ class CompanyController extends Controller
      * @param  \App\Http\Requests\StoreCompanyRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCompanyRequest $request)
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "name" => 'required',
+            "email" => 'required|email',
+            "phone" => 'required',
+            "password" => 'required|min:6|max:12',
+            "description" => 'required',
+        ]);
+        $file = $request->file('image')->store('');
+        $data['image'] = $file;
+        Company::create($data);
+        return redirect()->route('company.index');
     }
 
     /**
@@ -48,7 +58,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        return view('company.index', compact('company'));
     }
 
     /**
@@ -59,7 +69,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        //
+        return view('company.edit', compact('company'));
     }
 
     /**
@@ -69,9 +79,26 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCompanyRequest $request, Company $company)
+    public function update(Request $request, Company $company)
     {
-        //
+        $request->validate([
+            "name" => 'required',
+            "email" => 'required|email',
+            "phone" => 'required',
+            "description" => 'required',
+            "password" => 'required|min:6|max:12',
+        ]);
+        if ($request->hasFile('image')) {
+            Storage::delete([$company->image]);
+            $image = $request->file('image')->store('');
+            $company->image = $image;
+        }
+        $company->email = $request->email;
+        $company->phone = $request->phone;
+        $company->description = $request->description;
+        $company->password = $request->password;
+        $company->save();
+        return redirect()->route('company.index');
     }
 
     /**
@@ -82,6 +109,8 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        Storage::delete([$company->image]);
+        $company->delete();
+        return back();
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     use HasFactory;
-
+    protected $guarded = [];
     /**
      * Get the location that owns the Job
      *

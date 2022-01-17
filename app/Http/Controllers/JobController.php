@@ -9,6 +9,28 @@ use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
+    public function hot_jobs_values()
+    {
+        try {
+            $locations = DB::table('locations')->get();
+            $categories = DB::table('categories')->get();
+            $titles = DB::table('titles')->get();
+            return [
+                "status" => 200,
+                "data" => [
+                    "location" => $locations,
+                    "categories" => $categories,
+                    "titles" => $titles,
+                ]
+            ];
+        } catch (\Illuminate\Database\QueryException $ex) {
+            return [
+                "status"=>500,
+                "data"=>$ex
+            ];
+        }
+    }
+
     public function hot_jobs()
     {
         try {
@@ -31,13 +53,16 @@ class JobController extends Controller
                 } elseif (!$title) {
                     return Job::where(['category' => $category, 'location' => $location])->get();
                 } else {
-                    return Job::where(['category' => $category, 'location' => $location,'title'=>$title])->get();
+                    return Job::where(['category' => $category, 'location' => $location, 'title' => $title])->get();
                 }
             } else {
                 return Job::take(15)->orderBy('id', 'desc')->get();
             }
         } catch (\Illuminate\Database\QueryException $ex) {
-            return $ex;
+            return [
+                "status"=>500,
+                "data"=>$ex
+            ];
         }
     }
     /**

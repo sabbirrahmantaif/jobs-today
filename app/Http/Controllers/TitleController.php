@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Title;
-use App\Http\Requests\StoreTitleRequest;
-use App\Http\Requests\UpdateTitleRequest;
+use Illuminate\Http\Request;
 
 class TitleController extends Controller
 {
@@ -15,7 +14,8 @@ class TitleController extends Controller
      */
     public function index()
     {
-        //
+        $titles = Title::orderBy('id', 'desc')->get();
+        return view('title.index', compact('titles'));
     }
 
     /**
@@ -25,7 +25,7 @@ class TitleController extends Controller
      */
     public function create()
     {
-        //
+        return view('title.create');
     }
 
     /**
@@ -34,9 +34,11 @@ class TitleController extends Controller
      * @param  \App\Http\Requests\StoreTitleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTitleRequest $request)
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate(['title' => 'required']);
+        Title::create($data);
+        return redirect()->route('title.index');
     }
 
     /**
@@ -47,7 +49,7 @@ class TitleController extends Controller
      */
     public function show(Title $title)
     {
-        //
+        return view('title.index', compact('title'));
     }
 
     /**
@@ -58,7 +60,7 @@ class TitleController extends Controller
      */
     public function edit(Title $title)
     {
-        //
+        return view('title.edit', compact('title'));
     }
 
     /**
@@ -68,9 +70,11 @@ class TitleController extends Controller
      * @param  \App\Models\Title  $title
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTitleRequest $request, Title $title)
+    public function update(Request $request, Title $title)
     {
-        //
+        $title->title = $request->title;
+        $title->save();
+        return redirect()->route('title.index');
     }
 
     /**
@@ -81,6 +85,7 @@ class TitleController extends Controller
      */
     public function destroy(Title $title)
     {
-        //
+        $title->delete();
+        return back();
     }
 }
