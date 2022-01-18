@@ -3,6 +3,9 @@
 @section('main-content')
 @section('title.index', 'class=active')
 <x-page-header header="Titles" page="title" />
+@if (Session::has('alert'))
+    <div class="alert alert-{{session('alert')}}">{{session('res')}}</div>
+@endif
 <div class="card">
     <div class="card-body">
         <div class="m-t-25">

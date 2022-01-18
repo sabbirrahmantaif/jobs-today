@@ -38,6 +38,8 @@ class TitleController extends Controller
     {
         $data = $request->validate(['title' => 'required']);
         Title::create($data);
+        session()->flash('alert','success');
+        session()->flash('res','created successfully');
         return redirect()->route('title.index');
     }
 
@@ -74,6 +76,8 @@ class TitleController extends Controller
     {
         $title->title = $request->title;
         $title->save();
+        session()->flash('alert','warning');
+        session()->flash('res','updated successfully');
         return redirect()->route('title.index');
     }
 
@@ -86,6 +90,8 @@ class TitleController extends Controller
     public function destroy(Title $title)
     {
         $title->delete();
+        session()->flash('alert','danger');
+        session()->flash('res','deleted successfully');
         return back();
     }
 }

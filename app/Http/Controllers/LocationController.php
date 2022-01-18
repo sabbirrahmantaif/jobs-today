@@ -38,6 +38,8 @@ class LocationController extends Controller
     {
         $data = $request->validate(["location"=>"required"]);
         Location::create($data);
+        session()->flash('alert','success');
+        session()->flash('res','created successfully');
         return redirect()->route('location.index');
     }
 
@@ -75,6 +77,8 @@ class LocationController extends Controller
         $request->validate(["location"=>"required"]);
         $location->location = $request->location;
         $location->save();
+        session()->flash('alert','warning');
+        session()->flash('res','updated successfully');
         return redirect()->route('location.index');
     }
 
@@ -87,6 +91,8 @@ class LocationController extends Controller
     public function destroy(Location $location)
     {
         $location->delete();
+        session()->flash('alert','danger');
+        session()->flash('res','deleted successfully');
         return back();
     }
 }

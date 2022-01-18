@@ -38,6 +38,8 @@ class CategoryController extends Controller
     {
         $data = $request->validate(['category' => 'required']);
         Category::create($data);
+        session()->flash('alert','success');
+        $request->session()->flash('res','created successfully');
         return redirect()->route('category.index');
     }
 
@@ -74,6 +76,8 @@ class CategoryController extends Controller
     {
         $category->category = $request->category;
         $category->save();
+        session()->flash('alert','warning');
+        $request->session()->flash('res','updated successfully');
         return redirect()->route('category.index');
     }
 
@@ -86,6 +90,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+        session()->flash('alert','danger');
+        session()->flash('res','deleted successfully');
         return back();
     }
 }

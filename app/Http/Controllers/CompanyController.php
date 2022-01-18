@@ -47,6 +47,8 @@ class CompanyController extends Controller
         $file = $request->file('image')->store('');
         $data['image'] = $file;
         Company::create($data);
+        session()->flash('alert','success');
+        $request->session()->flash('res','Created successfully');
         return redirect()->route('company.index');
     }
 
@@ -98,6 +100,8 @@ class CompanyController extends Controller
         $company->description = $request->description;
         $company->password = $request->password;
         $company->save();
+        session()->flash('alert','warning');
+        $request->session()->flash('res','updated successfully');
         return redirect()->route('company.index');
     }
 
@@ -111,6 +115,8 @@ class CompanyController extends Controller
     {
         Storage::delete([$company->image]);
         $company->delete();
+        session()->flash('alert','danger');
+        session()->flash('res','deleted successfully');
         return back();
     }
 }
