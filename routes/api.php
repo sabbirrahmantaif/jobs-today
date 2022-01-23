@@ -33,3 +33,4 @@ Route::post('/hot-jobs',[JobController::class,'hot_jobs_values']);
 
 // CV controller with cv model
 Route::post('/update-cv',[CVController::class,'upsert']);
+Route::get('/get-cv',[CVController::class,'edit']);

@@ -90,7 +90,8 @@ class CVController extends Controller
      */
     public function edit(CV $cV)
     {
-        //
+        $user_id = request('id');
+        return CV::where('user_id',$user_id)->get();
     }
 
     /**
