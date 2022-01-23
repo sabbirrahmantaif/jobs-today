@@ -14,6 +14,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Quizes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                     </tr>
@@ -23,6 +24,7 @@
                         <tr>
                             <td>{{ $category->id }}</td>
                             <td>{{ $category->category }}</td>
+                            <td><a href="{{url('quiz?type=admin&id='.$category->id)}}">manage quizes</a></td>
                             <td>{{ $category->created_at }}</td>
                             <td>{{ $category->updated_at }}</td>
                             <td><a href="{{ route('category.edit', $category->id) }}"><button

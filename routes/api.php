@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CVController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,3 +35,6 @@ Route::post('/hot-jobs',[JobController::class,'hot_jobs_values']);
 // CV controller with cv model
 Route::post('/update-cv',[CVController::class,'upsert']);
 Route::get('/get-cv',[CVController::class,'edit']);
+
+// Quiz controller with quiz model
+Route::get('/quiz',[QuizController::class,'getQuizzesByCategory']);

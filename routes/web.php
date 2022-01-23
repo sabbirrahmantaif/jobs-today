@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Jobs;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TitleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -38,6 +39,12 @@ Route::group(['middleware' => ['admin']], function () {
     Route::resource('title', TitleController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('company', CompanyController::class);
+
+    // quiz related routes
+    Route::get('quiz', [QuizController::class,'getQuizzesByCategory']);
+    Route::get('quiz/create/{category_id}',[QuizController::class,'createQuizesByCategory']);
+    Route::post('quiz/create',[QuizController::class,'insertQuizesByCategory']);
+    Route::delete('quiz/delete/{id}',[QuizController::class,'deleteQuiz']);
 });
 
 Route::post('login', [UserController::class, 'admin_login'])->name('login');
