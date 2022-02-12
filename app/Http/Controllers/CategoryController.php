@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::orderBy('id', 'desc')->get();
-        return view('category.index', compact('categories'));
+        return view('admin.category.index', compact('categories'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        return view('admin.category.create');
     }
 
     /**
@@ -51,7 +51,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('category.index', compact('category'));
+        return view('admin.category.index', compact('category'));
     }
 
     /**
@@ -62,7 +62,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('category.edit', compact('category'));
+        return view('admin.category.edit', compact('category'));
     }
 
     /**

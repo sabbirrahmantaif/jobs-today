@@ -18,12 +18,11 @@ class CreateCompaniesTable extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->string('category')->nullable();
             $table->string('location')->nullable();
-            $table->string('title')->nullable();
             $table->string('password')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }

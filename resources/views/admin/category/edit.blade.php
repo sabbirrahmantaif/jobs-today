@@ -1,8 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('main-content')
 @section('category.edit', 'class=active')
-<x-page-header header="Edit Category" page="category" />
 <div class="card">
     <div class="card-body">
         <form class="col-md-4 mx-auto" action="{{ route('category.update',$category->id) }}" method="post">

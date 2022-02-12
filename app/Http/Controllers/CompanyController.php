@@ -8,6 +8,63 @@ use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
+    public function disapproveCompany(Request $request)
+    {
+        $company = Company::find($request->id);
+        $company->approved = false;
+        $company->save();
+        return back();
+    }
+    public function approveCompany(Request $request)
+    {
+        $company = Company::find($request->id);
+        $company->approved = true;
+        $company->save();
+        return back();
+    }
+    public function home()
+    {
+        $res = Company::where('id',session('company')->id)->with('jobs')->first();
+        return view('company.index',['company'=>$res]);
+    }
+
+    public function logout()
+    {
+        session()->forget('company');
+        return redirect('login');
+    }
+
+    public function login(Request $request)
+    {
+        $response = Company::where(['email' => $request->email, 'password' => $request->password])->first();
+        // return print($response);
+        if ($response) {
+            if ($response->approved) {
+                session()->put('company',$response);
+                return redirect('/');
+            }else{
+                return redirect('/login')->with('res',['type'=>'danger','message'=>'This company not activated yet']);
+            }
+        }else{
+            return redirect('/login')->with('res',['type'=>'danger','message'=>'credentials not matched']);
+        }
+    }
+
+    public function registration(Request $request)
+    {
+        $request->validate([
+            'email'=>'email|unique:companies,email'
+        ]);
+        if (Company::create($request->all())) {
+            session()->flash('res', ['type' => 'success', 'message' => 'Created successfully, Login to continue']);
+            return redirect('login');
+        } else {
+            return redirect()->back()->with('res', ['type' => 'danger', 'message' => 'Give valid informations']);
+        }
+    }
+
+    // all above for company pannel and below for admin pannel
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +73,7 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::orderBy('id', 'desc')->get();
-        return view('company.index', compact('companies'));
+        return view('admin.company.index', compact('companies'));
     }
 
     /**
@@ -44,11 +101,12 @@ class CompanyController extends Controller
             "password" => 'required|min:6|max:12',
             "description" => 'required',
         ]);
+        $data['approved'] = $request->approved==="on"?true:false;
         $file = $request->file('image')->store('');
         $data['image'] = $file;
         Company::create($data);
-        session()->flash('alert','success');
-        $request->session()->flash('res','Created successfully');
+        session()->flash('alert', 'success');
+        $request->session()->flash('res', 'Created successfully');
         return redirect()->route('company.index');
     }
 
@@ -89,20 +147,22 @@ class CompanyController extends Controller
             "phone" => 'required',
             "description" => 'required',
             "password" => 'required|min:6|max:12',
+            "location" => 'required'
         ]);
         if ($request->hasFile('image')) {
             Storage::delete([$company->image]);
             $image = $request->file('image')->store('');
             $company->image = $image;
         }
+        $company->name = $request->name;
         $company->email = $request->email;
         $company->phone = $request->phone;
         $company->description = $request->description;
         $company->password = $request->password;
+        $company->location = $request->location;
         $company->save();
-        session()->flash('alert','warning');
-        $request->session()->flash('res','updated successfully');
-        return redirect()->route('company.index');
+        session()->put('company',$company);
+        return redirect('/');
     }
 
     /**
@@ -115,8 +175,8 @@ class CompanyController extends Controller
     {
         Storage::delete([$company->image]);
         $company->delete();
-        session()->flash('alert','danger');
-        session()->flash('res','deleted successfully');
+        session()->flash('alert', 'danger');
+        session()->flash('res', 'deleted successfully');
         return back();
     }
 }

@@ -1,13 +1,13 @@
 @extends('layouts.layout')
-
+@section('title','| Admin')
 @section('contents')
 <div class="layout">
     <!-- Header START -->
-    <x-header/>
+    <x-admin-header/>
     <!-- Header END -->
 
     <!-- Side Nav START -->
-    <x-sidenav/>
+    <x-admin-sidenav/>
     <!-- Side Nav END -->
 
     <!-- Page Container START -->

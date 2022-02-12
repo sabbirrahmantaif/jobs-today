@@ -1,8 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('main-content')
-@section('category.index', 'class=active')
-<x-page-header header="Categories" page="category" />
+@section('title.index', 'class=active')
 @if (Session::has('alert'))
     <div class="alert alert-{{session('alert')}}">{{session('res')}}</div>
 @endif
@@ -14,22 +13,22 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Quizes</th>
                         <th>Created At</th>
                         <th>Updated At</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
+                    @foreach ($titles as $title)
                         <tr>
-                            <td>{{ $category->id }}</td>
-                            <td>{{ $category->category }}</td>
-                            <td><a href="{{url('quiz?type=admin&id='.$category->id)}}">manage quizes</a></td>
-                            <td>{{ $category->created_at }}</td>
-                            <td>{{ $category->updated_at }}</td>
-                            <td><a href="{{ route('category.edit', $category->id) }}"><button
+                            <td>{{ $title->id }}</td>
+                            <td>{{ $title->title }}</td>
+                            <td>{{ $title->created_at }}</td>
+                            <td>{{ $title->updated_at }}</td>
+                            <td><a href="{{ route('title.edit', $title->id) }}"><button
                                         class="btn btn-sm btn-warning">Edit</button></a></td>
-                            <form action="{{ route('category.destroy', $category->id) }}" method="post">
+                            <form action="{{ route('title.destroy', $title->id) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <td><button type="submit" class="btn btn-sm btn-danger">Delete</button></td>
@@ -43,6 +42,8 @@
                         <th>Name</th>
                         <th>Created At</th>
                         <th>Updated At</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </tfoot>
             </table>

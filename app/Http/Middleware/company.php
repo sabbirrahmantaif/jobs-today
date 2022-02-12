@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class admin
+class company
 {
     /**
      * Handle an incoming request.
@@ -16,11 +16,10 @@ class admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->session()->has('admin')) {
+        if ($request->session()->has('company')) {
             return $next($request);
-        }
-        else{
-            return redirect('admin/login');
+        }else{
+            return redirect('login');
         }
     }
 }

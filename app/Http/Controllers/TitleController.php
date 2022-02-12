@@ -15,7 +15,7 @@ class TitleController extends Controller
     public function index()
     {
         $titles = Title::orderBy('id', 'desc')->get();
-        return view('title.index', compact('titles'));
+        return view('admin.title.index', compact('titles'));
     }
 
     /**
@@ -25,7 +25,7 @@ class TitleController extends Controller
      */
     public function create()
     {
-        return view('title.create');
+        return view('admin.title.create');
     }
 
     /**
@@ -51,7 +51,7 @@ class TitleController extends Controller
      */
     public function show(Title $title)
     {
-        return view('title.index', compact('title'));
+        return view('admin.title.index', compact('title'));
     }
 
     /**
@@ -62,7 +62,7 @@ class TitleController extends Controller
      */
     public function edit(Title $title)
     {
-        return view('title.edit', compact('title'));
+        return view('admin.title.edit', compact('title'));
     }
 
     /**

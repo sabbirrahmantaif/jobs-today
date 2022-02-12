@@ -1,50 +1,75 @@
-@extends('layouts.app')
-
+@extends('layouts.company')
 @section('main-content')
-@section('company.index', 'class=active')
-<x-page-header header="Companies" page="company" />
-@if (Session::has('alert'))
-    <div class="alert alert-{{session('alert')}}">{{session('res')}}</div>
-@endif
-<div class="card">
-    <div class="card-body">
-        <div class="m-t-25">
-            <table id="data-table" class="table">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($companies as $company)
-                        <tr>
-                            <td><img width="100%" src="{{ asset('storage/app/'.$company->image) }}" alt="*"></td>
-                            <td>{{ $company->name }}</td>
-                            <td>{{ $company->email }}</td>
-                            <td>{{ $company->phone }}</td>
-                            <td><a href="{{ route('company.edit', $company->id) }}"><button
-                                        class="btn btn-sm btn-warning">Edit</button></a></td>
-                            <form action="{{ route('company.destroy', $company->id) }}" method="post">
-                                @csrf
-                                @method('delete')
-                                <td><button type="submit" class="btn btn-sm btn-danger">Delete</button></td>
-                            </form>
-                        </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                    </tr>
-                </tfoot>
-            </table>
+@section('home', 'class=active')
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <div class="d-md-flex align-items-center">
+                        <div class="text-center text-sm-left ">
+                            @if (session('company')['image'])
+                                <div class="avatar avatar-image" style="width: 150px; height:150px">
+                                    <img src="{{asset('storage/app/'.session('company')['image'])}}" alt="">
+                                </div>
+                            @else
+                                {{-- <div class="avatar avatar-icon" style="width: 150px; height:150px">
+                                    <i class="anticon anticon-user"></i>
+                                </div> --}}
+                                <div class="avatar avatar-icon avatar-lg">
+                                    <i class="anticon anticon-user"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="text-center text-sm-left m-v-15 p-l-30">
+                            <h2 class="m-b-5">{{ session('company')['name'] }}</h2>
+                            {{-- <p class="text-opacity font-size-13">@Marshallnich</p> --}}
+                            {{-- <p class="text-dark m-b-20">Frontend Developer, UI/UX Designer</p> --}}
+                            {{-- <button class="btn btn-primary btn-tone">Contact</button> --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="d-md-block d-none border-left col-1"></div>
+                        <div class="col">
+                            <ul class="list-unstyled m-t-10">
+                                <li class="row">
+                                    <p class="col-sm-4 col-4 font-weight-semibold text-dark m-b-5">
+                                        <i class="m-r-10 text-primary anticon anticon-mail"></i>
+                                        <span>Email: </span>
+                                    </p>
+                                    <p class="col font-weight-semibold"> {{session('company')['email']}}</p>
+                                </li>
+                                <li class="row">
+                                    <p class="col-sm-4 col-4 font-weight-semibold text-dark m-b-5">
+                                        <i class="m-r-10 text-primary anticon anticon-phone"></i>
+                                        <span>Phone: </span>
+                                    </p>
+                                    <p class="col font-weight-semibold"> {{session('company')['phone']}}</p>
+                                </li>
+                                <li class="row">
+                                    <p class="col-sm-4 col-5 font-weight-semibold text-dark m-b-5">
+                                        <i class="m-r-10 text-primary anticon anticon-compass"></i>
+                                        <span>Location: </span>
+                                    </p>
+                                    <p class="col font-weight-semibold"> {{session('company')['location']}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Bio</h5>
+                    <p>{{session('company')['description']}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

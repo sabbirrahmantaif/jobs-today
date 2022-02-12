@@ -1,8 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title.create', 'class=active')
 @section('main-content')
-    <x-page-header header="Create Title" page="title" />
     <div class="card">
         <div class="card-body">
             <form class="col-md-4 mx-auto" method="POST" action="{{ route('title.store') }}">

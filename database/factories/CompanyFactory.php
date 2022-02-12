@@ -18,12 +18,11 @@ class CompanyFactory extends Factory
             'name'=>$this->faker->name(),
             'email'=>$this->faker->email(),
             'phone'=>$this->faker->phoneNumber(),
-            'category'=>Str::random(5),
             'location'=>$this->faker->streetAddress(),
-            'title'=>Str::random(5),
             'password'=>'password',
             'description'=>Str::random(80),
             'image'=>$this->faker->image(),
+            'approved'=>false
         ];
     }
 }

@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function admin_login(Request $req)
-    {
-        if ($req->username === 'admin' && $req->password === 'password') {
-            Session::put('admin',true);
-            return redirect('/');
-        }else{
-            return back();
-        }
-    }
+    // public function admin_login(Request $req)
+    // {
+    //     if ($req->username === 'admin@gmail.com' && $req->password === 'password') {
+    //         Session::put('admin', true);
+    //         return redirect('/');
+    //     } else {
+    //         return back();
+    //     }
+    // }
 
     public function registration(Request $req)
     {

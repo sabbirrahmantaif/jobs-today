@@ -1,8 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('category.create', 'class=active')
 @section('main-content')
-    <x-page-header header="Create Category" page="category" />
     <div class="card">
         <div class="card-body">
             <form class="col-md-4 mx-auto" method="POST" action="{{ route('category.store') }}">

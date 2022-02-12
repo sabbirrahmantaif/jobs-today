@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
+use App\Models\Category;
+use App\Models\Company;
+use App\Models\Title;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
@@ -70,7 +74,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        return view('company.job.index',['company'=>Company::where('id',session('company')->id)->with('jobs')->first()]);
     }
 
     /**
@@ -80,6 +84,7 @@ class JobController extends Controller
      */
     public function create()
     {
+        return view('company.job.create',['titles'=>Title::all(),'categories'=>Category::all()]);
     }
 
     /**
@@ -88,9 +93,10 @@ class JobController extends Controller
      * @param  \App\Http\Requests\StoreJobRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreJobRequest $request)
+    public function store(Request $request)
     {
-        //
+        Job::create($request->all());
+        return redirect('/job')->with('res',['type'=>'success','message'=>'created succcessfully']);
     }
 
     /**

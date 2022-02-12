@@ -15,23 +15,25 @@ class CreateJobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('position')->nullable();
             $table->bigInteger('company_id')->unsigned();
-            $table->string('location')->nullable();
-            $table->string('title')->nullable();
-            $table->string('category')->nullable();
-            $table->string('vacancy')->nullable();
+            $table->bigInteger('title_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned();
+            $table->string('position')->nullable();
+            $table->integer('vacancy')->nullable();
             $table->string('deadline')->nullable();
             $table->string('salary')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('nature')->nullable();
-            $table->string('education')->nullable();
+            $table->text('education')->nullable();
             $table->string('experience')->nullable();
-            $table->string('requirements')->nullable();
-            $table->string('other_benefits')->nullable();
+            $table->text('requirements')->nullable();
+            $table->longText('other_benefits')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('title_id')->references('id')->on('titles')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
