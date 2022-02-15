@@ -9,15 +9,6 @@ class Job extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    /**
-     * Get the location that owns the Job
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function location()
-    {
-        return $this->belongsTo('App\Models\Location', 'location_id', 'id');
-    }
 
     /**
      * Get the category that owns the Job

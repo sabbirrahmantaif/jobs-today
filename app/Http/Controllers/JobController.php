@@ -16,16 +16,13 @@ class JobController extends Controller
     public function hot_jobs_values()
     {
         try {
-            $locations = DB::table('locations')->get();
-            $categories = DB::table('categories')->get();
-            $titles = DB::table('titles')->get();
+            $locations = Company::select('location')->get();
+            $categories = Category::get();
+            $titles = Title::get();
             return [
-                "status" => 200,
-                "data" => [
-                    "location" => $locations,
-                    "categories" => $categories,
-                    "titles" => $titles,
-                ]
+                "location" => $locations,
+                "categories" => $categories,
+                "titles" => $titles,
             ];
         } catch (\Illuminate\Database\QueryException $ex) {
             return [
@@ -43,22 +40,37 @@ class JobController extends Controller
             $title = request('title');
             if ($location || $category || $title) {
                 if (!$location && !$category) {
-                    return Job::where('title', $title)->get();
-                } elseif (!$location && !$title) {
-                    return Job::where('category', $category)->get();
-                } elseif (!$category && !$title) {
-                    return Job::where('location', $location)->get();
-                } elseif (!$category) {
-                    return Job::where(['location' => $location, 'title' => $title])->get();
-                } elseif (!$location) {
-                    return Job::where(['category' => $category, 'title' => $title])->get();
-                } elseif (!$title) {
-                    return Job::where(['category' => $category, 'location' => $location])->get();
-                } else {
-                    return Job::where(['category' => $category, 'location' => $location, 'title' => $title])->get();
+                    return Job::where('title_id', $title)->with(['category','title','company'])->get();
+                }
+                elseif (!$location && !$title) {
+                    return Job::where('category_id', $category)->with(['category','title','company'])->get();
+                }
+                elseif (!$category && !$title) {
+                    return Job::with(['category','title','company'])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location',$location);
+                    })->get();
+                }
+                elseif (!$category) {
+                    return Job::where(['title_id' => $title])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location',$location);
+                    })->with(['category','title','company'])->get();
+                }
+                elseif (!$location) {
+                    return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->get();
+                }
+                elseif (!$title) {
+                    return Job::where(['category_id' => $category])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location',$location);
+                    })->with(['category','title','company'])->get();
+                }
+                else {
+                    return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->get();
                 }
             } else {
-                return Job::take(15)->orderBy('id', 'desc')->get();
+                return Job::take(15)->orderBy('id', 'desc')->with(['category','title','company'])->get();
             }
         } catch (\Illuminate\Database\QueryException $ex) {
             return [
