@@ -28,6 +28,7 @@
                                     <td>{{ $quiz->option2 }}</td>
                                     <td>{{ $quiz->option3 }}</td>
                                     <td>{{ $quiz->option4 }}</td>
+                                    <td><a class="btn btn-sm btn-warning" href="{{url('admin/quiz/edit/' . $quiz->id)}}">Edit</a></td>
                                     <form action="{{ url('admin/quiz/delete/' . $quiz->id) }}" method="post">
                                         @csrf
                                         @method('delete')

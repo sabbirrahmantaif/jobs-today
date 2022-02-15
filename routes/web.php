@@ -62,6 +62,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('quiz/create/{category_id}', [QuizController::class, 'createQuizesByCategory']);
         Route::post('quiz/create', [QuizController::class, 'insertQuizesByCategory']);
         Route::delete('quiz/delete/{id}', [QuizController::class, 'deleteQuiz']);
+        Route::get('quiz/edit/{id}',[QuizController::class,'editQuiz']);
+        Route::post('quiz/update',[QuizController::class,'updateQuiz']);
     });
 });
 
