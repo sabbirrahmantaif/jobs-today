@@ -52,22 +52,25 @@ class JobController extends Controller
                     })->get();
                 }
                 elseif (!$category) {
-                    return Job::where(['title_id' => $title])->whereHas('company',function ($q) use($location)
+                    return Job::where(['title_id' => $title])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
                     {
                         $q->where('location',$location);
-                    })->with(['category','title','company'])->get();
+                    })->get();
                 }
                 elseif (!$location) {
                     return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->get();
                 }
                 elseif (!$title) {
-                    return Job::where(['category_id' => $category])->whereHas('company',function ($q) use($location)
+                    return Job::where(['category_id' => $category])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
                     {
                         $q->where('location',$location);
-                    })->with(['category','title','company'])->get();
+                    })->get();
                 }
                 else {
-                    return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->get();
+                    return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location',$location);
+                    })->get();
                 }
             } else {
                 return Job::take(15)->orderBy('id', 'desc')->with(['category','title','company'])->get();
