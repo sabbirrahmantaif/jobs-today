@@ -90,7 +90,7 @@ Route::group(['middleware' => 'company'], function () {
         return redirect()->back();
     });
     Route::resource('job', JobController::class);
-    Route::get('/applications',[ApplicationController::class,'company_index']);
+    Route::get('/job/{id}/applications',[ApplicationController::class,'job_applications']);
 });
 
 Route::get('registration', function () {

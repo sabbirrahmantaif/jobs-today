@@ -36,7 +36,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
                         <i class="anticon anticon-mail"></i>
@@ -51,7 +51,7 @@
                         <a href="{{url('/applications')}}">Details</a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </div>

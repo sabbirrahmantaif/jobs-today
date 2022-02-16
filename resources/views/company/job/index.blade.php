@@ -30,8 +30,9 @@
                                 <th>experience</th>
                                 <th>requirements</th>
                                 {{-- <th>other_benefits</th> --}}
-                                <th>created_at</th>
-                                <th>updated_at</th>
+                                {{-- <th>created_at</th>
+                                <th>updated_at</th> --}}
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,8 +51,9 @@
                                     <td>{{ $job->experience }}</td>
                                     <td>{{ $job->requirements }}</td>
                                     {{-- <td>{{ $job->other_benefits }}</td> --}}
-                                    <td>{{ $job->created_at }}</td>
-                                    <td>{{ $job->updated_at }}</td>
+                                    {{-- <td>{{ $job->created_at }}</td>
+                                    <td>{{ $job->updated_at }}</td> --}}
+                                    <td><a href="{{url('job/'.$job->id.'/applications')}}">Applications</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

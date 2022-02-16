@@ -47,30 +47,42 @@ class JobController extends Controller
                     return Job::where('category_id', $category)->with(['category','title','company'])->get();
                 }
                 elseif (!$category && !$title) {
-                    return Job::with(['category','title','company'])->whereHas('company',function ($q) use($location)
+                    return Job::with(['category','title','company'=>function ($q1)
                     {
-                        $q->where('location_id',$location)->with('location');
+                        $q1->with('location');
+                    }])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location_id',$location);
                     })->get();
                 }
                 elseif (!$category) {
-                    return Job::where(['title_id' => $title])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
+                    return Job::where(['title_id' => $title])->with(['category','title','company'=>function ($q1)
                     {
-                        $q->where('location_id',$location)->with('location');
+                        $q1->with('location');
+                    }])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location_id',$location);
                     })->get();
                 }
                 elseif (!$location) {
                     return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->get();
                 }
                 elseif (!$title) {
-                    return Job::where(['category_id' => $category])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
+                    return Job::where(['category_id' => $category])->with(['category','title','company'=>function ($q1)
                     {
-                        $q->where('location_id',$location)->with('location');
+                        $q1->with('location');
+                    }])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location_id',$location);
                     })->get();
                 }
                 else {
-                    return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
+                    return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'=>function ($q1)
                     {
-                        $q->where('location_id',$location)->with('location');
+                        $q1->with('location');
+                    }])->whereHas('company',function ($q) use($location)
+                    {
+                        $q->where('location_id',$location);
                     })->get();
                 }
             } else {

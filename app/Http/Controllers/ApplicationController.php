@@ -23,18 +23,16 @@ class ApplicationController extends Controller
         return view('admin.users.applications',['applications'=>$applications]);
     }
 
-    public function company_index()
+    public function job_applications($id)
     {
-        // $applications = Company::where('id',session('company')['id'])->with(['jobs'=>function ($q)
+        // file_put_contents('a.php',json_encode(Application::where('job_id',$id)->with(['user','job'=>function ($q)
         // {
-        //     $q->with(['applications'=>function ($q1)
-        //     {
-        //         $q1->with('user');
-        //     }]);
-        // }])->first();
-        // file_put_contents('a.php',json_encode($applications,JSON_PRETTY_PRINT));
-        return "Working on";
-        // return view('company.application.index',['applications'=>$applications]);
+        //     $q->with(['title','category']);
+        // }])->get(),JSON_PRETTY_PRINT));
+        return view('company.job.applications',['apps'=>Application::where('job_id',$id)->with(['user','job'=>function ($q)
+        {
+            $q->with(['title','category']);
+        }])->get()]);
     }
 
     /**
