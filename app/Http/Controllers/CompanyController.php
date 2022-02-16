@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,8 +25,8 @@ class CompanyController extends Controller
     }
     public function home()
     {
-        $res = Company::where('id',session('company')->id)->with('jobs')->first();
-        return view('company.index',['company'=>$res]);
+        $res = Company::where('id', session('company')->id)->with('jobs')->first();
+        return view('company.index', ['company' => $res]);
     }
 
     public function logout()
@@ -40,20 +41,20 @@ class CompanyController extends Controller
         // return print($response);
         if ($response) {
             if ($response->approved) {
-                session()->put('company',$response);
+                session()->put('company', $response);
                 return redirect('/');
-            }else{
-                return redirect('/login')->with('res',['type'=>'danger','message'=>'This company not activated yet']);
+            } else {
+                return redirect('/login')->with('res', ['type' => 'danger', 'message' => 'This company not activated yet']);
             }
-        }else{
-            return redirect('/login')->with('res',['type'=>'danger','message'=>'credentials not matched']);
+        } else {
+            return redirect('/login')->with('res', ['type' => 'danger', 'message' => 'credentials not matched']);
         }
     }
 
     public function registration(Request $request)
     {
         $request->validate([
-            'email'=>'email|unique:companies,email'
+            'email' => 'email|unique:companies,email'
         ]);
         if (Company::create($request->all())) {
             session()->flash('res', ['type' => 'success', 'message' => 'Created successfully, Login to continue']);
@@ -101,7 +102,7 @@ class CompanyController extends Controller
             "password" => 'required|min:6|max:12',
             "description" => 'required',
         ]);
-        $data['approved'] = $request->approved==="on"?true:false;
+        $data['approved'] = $request->approved === "on" ? true : false;
         $file = $request->file('image')->store('');
         $data['image'] = $file;
         Company::create($data);
@@ -129,7 +130,13 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        return view('company.edit', compact('company'));
+        // return json_encode($company->location, JSON_PRETTY_PRINT);
+        return view('company.edit',['company'=>$company,'locations'=>Location::all()]);
+    }
+    public function adminEditCompnay($id)
+    {
+        $company = Company::where('id', $id)->with('location')->first();
+        return view('admin.company.edit', ['company' => $company,'locations'=>Location::all()]);
     }
 
     /**
@@ -145,9 +152,7 @@ class CompanyController extends Controller
             "name" => 'required',
             "email" => 'required|email',
             "phone" => 'required',
-            "description" => 'required',
-            "password" => 'required|min:6|max:12',
-            "location" => 'required'
+            "password" => 'required|min:6|max:12'
         ]);
         if ($request->hasFile('image')) {
             Storage::delete([$company->image]);
@@ -159,10 +164,34 @@ class CompanyController extends Controller
         $company->phone = $request->phone;
         $company->description = $request->description;
         $company->password = $request->password;
-        $company->location = $request->location;
+        $company->location_id = $request->location_id;
         $company->save();
-        session()->put('company',$company);
+        session()->put('company', $company);
         return redirect('/');
+    }
+
+    public function adminUpdateCompnay(Request $request)
+    {
+        $company = Company::where('id', $request->id)->first();
+        $request->validate([
+            "name" => 'required',
+            "email" => 'required|email',
+            "phone" => 'required',
+            "password" => 'required|min:6|max:12',
+        ]);
+        if ($request->hasFile('image')) {
+            Storage::delete([$company->image]);
+            $image = $request->file('image')->store('');
+            $company->image = $image;
+        }
+        $company->name = $request->name;
+        $company->email = $request->email;
+        $company->phone = $request->phone;
+        $company->description = $request->description;
+        $company->password = $request->password;
+        $company->location_id = $request->location_id;
+        $company->save();
+        return redirect('admin/company');
     }
 
     /**

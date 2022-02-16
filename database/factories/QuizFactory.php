@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class QuizFactory extends Factory
@@ -14,7 +15,7 @@ class QuizFactory extends Factory
     public function definition()
     {
         return [
-            "category_id" => rand(1, 10),
+            "category_id" => Category::factory(),
             "question" => $this->faker->sentence(4, true),
             "option1" => $this->faker->words(3,true),
             "option2" => $this->faker->words(3,true),

@@ -11,7 +11,6 @@
             <table id="data-table" class="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -22,7 +21,6 @@
                 <tbody>
                     @foreach ($titles as $title)
                         <tr>
-                            <td>{{ $title->id }}</td>
                             <td>{{ $title->title }}</td>
                             <td>{{ $title->created_at }}</td>
                             <td>{{ $title->updated_at }}</td>
@@ -38,7 +36,6 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Created At</th>
                         <th>Updated At</th>

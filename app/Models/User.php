@@ -17,14 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'image',
-        'birth_date',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * Get the cv associated with the User

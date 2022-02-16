@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CVController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\QuizController;
@@ -38,3 +39,6 @@ Route::get('/get-cv',[CVController::class,'edit']);
 
 // Quiz controller with quiz model
 Route::get('/quiz',[QuizController::class,'getQuizzesByCategory']);
+
+// Apply for job
+Route::post('/apply-job',[ApplicationController::class,'store']);

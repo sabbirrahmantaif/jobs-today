@@ -60,6 +60,25 @@
                     <span class="icon-holder">
                         <i class="anticon anticon-compass"></i>
                     </span>
+                    <span class="title">Locations</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li @yield('location.index')>
+                        <a href="{{ route('location.index') }}">Location</a>
+                    </li>
+                    <li @yield('location.create')>
+                        <a href="{{ route('location.create') }}">Create Location</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-flag"></i>
+                    </span>
                     <span class="title">Company</span>
                     <span class="arrow">
                         <i class="arrow-icon"></i>
@@ -72,6 +91,25 @@
                     {{-- <li @yield('company.create')>
                         <a href="{{ route('company.create') }}">Create Company</a>
                     </li> --}}
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-user"></i>
+                    </span>
+                    <span class="title">Users</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li @yield('users.index')>
+                        <a href="{{ url('admin/users') }}">Users</a>
+                    </li>
+                    <li @yield('users.application')>
+                        <a href="{{ url('admin/applications') }}">User Applications</a>
+                    </li>
                 </ul>
             </li>
         </ul>

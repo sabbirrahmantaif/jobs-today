@@ -39,4 +39,14 @@ class Job extends Model
     {
         return $this->belongsTo('App\Models\Company', 'company_id', 'id');
     }
+
+    /**
+     * Get all of the applications for the Job
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function applications()
+    {
+        return $this->hasMany(Application::class, 'job_id', 'id');
+    }
 }

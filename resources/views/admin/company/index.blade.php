@@ -17,17 +17,17 @@
                         <th>Phone</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($companies as $company)
                         <tr>
-                            <td><img width="80px" src="{{ asset('storage/app/' . $company->image) }}" alt="*"></td>
+                            <td><img width="80px" src="{{ asset('storage/app/'.$company->image) }}" alt="*"></td>
                             <td>{{ $company->name }}</td>
                             <td>{{ $company->email }}</td>
                             <td>{{ $company->phone }}</td>
-                            {{-- <td><a href="{{ route('company.edit', $company->id) }}"><button
-                                        class="btn btn-sm btn-warning">Edit</button></a></td> --}}
+                            <td><a href="{{ url('admin/company/edit', $company->id) }}"><button class="btn btn-sm btn-warning">Edit</button></a></td>
                             <form action="{{ route('company.destroy', $company->id) }}" method="post">
                                 @csrf
                                 @method('delete')

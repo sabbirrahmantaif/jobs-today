@@ -9,15 +9,60 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    // public function admin_login(Request $req)
+    public function show_cv($id)
+    {
+        return view('admin.users.cv', ['user', User::where('id', $id)->with('cv')->first()]);
+    }
+
+    // public function admin_pp_update(Request $request)
     // {
-    //     if ($req->username === 'admin@gmail.com' && $req->password === 'password') {
-    //         Session::put('admin', true);
-    //         return redirect('/');
-    //     } else {
-    //         return back();
-    //     }
+    //     $user = User::find($request->id);
+    //     Storage::delete($user->image);
+    //     $file = $request->file('image')->store('');
+    //     $user->update(["image" => $file]);
+    //     return redirect('admin/users');
     // }
+
+    public function update(Request $request)
+    {
+        $user = User::where('id', $request->id)->first();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->birth_date = $request->birth_date;
+        $user->gender = $request->gender;
+        if ($request->hasFile('image')) {
+            Storage::delete($user->image);
+            $file = $request->file('image')->store('');
+            $user->image = $file;
+        }
+        $user->save();
+        return redirect('admin/users');
+    }
+
+    public function edit($id)
+    {
+        return view('admin.users.edit', ['user' => User::where('id', $id)->first()]);
+    }
+
+    public function delete($id)
+    {
+        User::where('id', $id)->delete();
+        return redirect()->back();
+    }
+
+    public function index()
+    {
+        return view('admin.users.index', ['users' => User::get()]);
+    }
+
+    public function status($id)
+    {
+        $user = User::where('id', $id)->first();
+        $user->approvement = !$user->approvement;
+        $user->save();
+        return redirect()->back();
+    }
 
     public function registration(Request $req)
     {
@@ -37,10 +82,17 @@ class UserController extends Controller
         try {
             $user = User::where(["email" => $req->email, "password" => $req->password])->first();
             if ($user) {
-                return [
-                    "status" => 200,
-                    "data" => $user
-                ];
+                if ($user->approvement) {
+                    return [
+                        "status" => 200,
+                        "data" => $user
+                    ];
+                } else {
+                    return [
+                        "status" => 500,
+                        "data" => "User not approved yet"
+                    ];
+                }
             } else {
                 return [
                     "status" => 404,

@@ -1,17 +1,15 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\Jobs;
 use App\Http\Controllers\LocationController;
-use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TitleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
 /*
@@ -54,8 +52,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::resource('title', TitleController::class);
         Route::resource('category', CategoryController::class);
         Route::resource('company', CompanyController::class)->except(['edit','update']);
+        Route::resource('location',LocationController::class);
         Route::post('approve-company', [CompanyController::class, 'approveCompany'])->name('approve-company');
         Route::post('disapprove-company', [CompanyController::class, 'disapproveCompany'])->name('disapprove-company');
+        Route::get('company/edit/{id}',[CompanyController::class,'adminEditCompnay']);
+        Route::post('company/update',[CompanyController::class,'adminUpdateCompnay']);
 
         // quiz related routes
         Route::get('quiz', [QuizController::class, 'getQuizzesByCategory']);
@@ -64,6 +65,17 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('quiz/delete/{id}', [QuizController::class, 'deleteQuiz']);
         Route::get('quiz/edit/{id}',[QuizController::class,'editQuiz']);
         Route::post('quiz/update',[QuizController::class,'updateQuiz']);
+
+        // job seakers / users - admin related routes
+        Route::get('users',[UserController::class,'index']);
+        Route::get('users/edit/{id}',[UserController::class,'edit']);
+        Route::post('users/update',[UserController::class,'update']);
+        Route::delete('users/delete/{id}',[UserController::class,'delete']);
+        Route::get('users/status/{id}',[UserController::class,'status']);
+        Route::get('users/cv/{id}',[UserController::class,'show_cv']);
+
+        // applications
+        Route::get('applications',[ApplicationController::class,'index']);
     });
 });
 
@@ -78,6 +90,7 @@ Route::group(['middleware' => 'company'], function () {
         return redirect()->back();
     });
     Route::resource('job', JobController::class);
+    Route::get('/applications',[ApplicationController::class,'company_index']);
 });
 
 Route::get('registration', function () {

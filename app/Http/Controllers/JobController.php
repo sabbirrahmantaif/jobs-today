@@ -7,6 +7,7 @@ use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
 use App\Models\Category;
 use App\Models\Company;
+use App\Models\Location;
 use App\Models\Title;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class JobController extends Controller
     public function hot_jobs_values()
     {
         try {
-            $locations = Company::select('location')->get();
+            $locations = Location::get();
             $categories = Category::get();
             $titles = Title::get();
             return [
@@ -48,13 +49,13 @@ class JobController extends Controller
                 elseif (!$category && !$title) {
                     return Job::with(['category','title','company'])->whereHas('company',function ($q) use($location)
                     {
-                        $q->where('location',$location);
+                        $q->where('location_id',$location)->with('location');
                     })->get();
                 }
                 elseif (!$category) {
                     return Job::where(['title_id' => $title])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
                     {
-                        $q->where('location',$location);
+                        $q->where('location_id',$location)->with('location');
                     })->get();
                 }
                 elseif (!$location) {
@@ -63,13 +64,13 @@ class JobController extends Controller
                 elseif (!$title) {
                     return Job::where(['category_id' => $category])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
                     {
-                        $q->where('location',$location);
+                        $q->where('location_id',$location)->with('location');
                     })->get();
                 }
                 else {
                     return Job::where(['category_id' => $category, 'title_id' => $title])->with(['category','title','company'])->whereHas('company',function ($q) use($location)
                     {
-                        $q->where('location',$location);
+                        $q->where('location_id',$location)->with('location');
                     })->get();
                 }
             } else {

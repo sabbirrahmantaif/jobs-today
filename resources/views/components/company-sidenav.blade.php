@@ -48,7 +48,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li @yield('application.index')>
-                        <a href="">Details</a>
+                        <a href="{{url('/applications')}}">Details</a>
                     </li>
                 </ul>
             </li>

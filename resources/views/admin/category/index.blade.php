@@ -12,9 +12,8 @@
                 <table id="data-table" class="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
-                            <th>Quizes</th>
+                            <th>Quizzes</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>#</th>
@@ -24,7 +23,6 @@
                     <tbody>
                         @foreach ($categories as $category)
                             <tr>
-                                <td>{{ $category->id }}</td>
                                 <td>{{ $category->category }}</td>
                                 <td><a href="{{ url('admin/quiz?type=admin&id=' . $category->id) }}">manage quizes</a>
                                 </td>
@@ -42,7 +40,6 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Quizes</th>
                             <th>Created At</th>
