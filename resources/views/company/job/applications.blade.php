@@ -30,7 +30,7 @@
                                     <td>{{ $app->user->name }}</td>
                                     <td>{{ $app->user->email }}</td>
                                     <td>{{ $app->user->phone }}</td>
-                                    <td><a href="#">cv</a></td>
+                                    <td><a href={{url('cv/'.$app->user->id)}}>cv</a></td>
                                     <td>{{ $app->created_at }}</td>
                                 </tr>
                             @endforeach

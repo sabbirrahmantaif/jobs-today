@@ -53,7 +53,7 @@
                                         <i class="m-r-10 text-primary anticon anticon-compass"></i>
                                         <span>Location: </span>
                                     </p>
-                                    <p class="col font-weight-semibold"> {{session('company')['location']->name}}</p>
+                                    <p class="col font-weight-semibold"> {{session('company')['location']?->name}}</p>
                                 </li>
                             </ul>
                         </div>

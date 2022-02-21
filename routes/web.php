@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CVController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\QuizController;
@@ -91,6 +92,7 @@ Route::group(['middleware' => 'company'], function () {
     });
     Route::resource('job', JobController::class);
     Route::get('/job/{id}/applications',[ApplicationController::class,'job_applications']);
+    Route::get('cv/{id}',[CVController::class,'show']);
 });
 
 Route::get('registration', function () {

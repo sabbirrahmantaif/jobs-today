@@ -77,9 +77,9 @@ class CVController extends Controller
      * @param  \App\Models\CV  $cV
      * @return \Illuminate\Http\Response
      */
-    public function show(CV $cV)
+    public function show($id)
     {
-        //
+        return view('company.job.cv',['cv'=>CV::where('user_id',$id)->first()]);
     }
 
     /**
