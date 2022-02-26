@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
+    public function apply_confirm(Request $request)
+    {
+        $status = Application::where(['user_id'=>$request->user_id,'job_id'=>$request->job_id])->first();
+        return $status;
+    }
 
     /**
      * Display a listing of the resource.
@@ -25,10 +30,6 @@ class ApplicationController extends Controller
 
     public function job_applications($id)
     {
-        // file_put_contents('a.php',json_encode(Application::where('job_id',$id)->with(['user','job'=>function ($q)
-        // {
-        //     $q->with(['title','category']);
-        // }])->get(),JSON_PRETTY_PRINT));
         return view('company.job.applications',['apps'=>Application::where('job_id',$id)->with(['user','job'=>function ($q)
         {
             $q->with(['title','category']);
@@ -66,9 +67,15 @@ class ApplicationController extends Controller
      * @param  \App\Models\Application  $application
      * @return \Illuminate\Http\Response
      */
-    public function show(Application $application)
+    public function show(Request $request)
     {
-        //
+        $apps = Application::where('user_id',$request->id)->with(['job'=>function ($q)
+        {
+            $q->with(['company','title','category']);
+        }])->get();
+        return [
+            "applications" => $apps
+        ];
     }
 
     /**

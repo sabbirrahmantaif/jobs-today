@@ -11,17 +11,9 @@ class UserController extends Controller
 {
     public function show_cv($id)
     {
-        return view('admin.users.cv', ['user', User::where('id', $id)->with('cv')->first()]);
+        $userWithCv = User::where('id', $id)->with('cv')->first();
+        return view('admin.users.cv', ['user'=> $userWithCv]);
     }
-
-    // public function admin_pp_update(Request $request)
-    // {
-    //     $user = User::find($request->id);
-    //     Storage::delete($user->image);
-    //     $file = $request->file('image')->store('');
-    //     $user->update(["image" => $file]);
-    //     return redirect('admin/users');
-    // }
 
     public function update(Request $request)
     {

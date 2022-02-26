@@ -41,4 +41,6 @@ Route::get('/get-cv',[CVController::class,'edit']);
 Route::get('/quiz',[QuizController::class,'getQuizzesByCategory']);
 
 // Apply for job
+Route::post('/apply-confirmations',[ApplicationController::class,'apply_confirm']);
 Route::post('/apply-job',[ApplicationController::class,'store']);
+Route::post('/my-applications',[ApplicationController::class,'show']);
