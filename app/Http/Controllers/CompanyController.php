@@ -53,14 +53,25 @@ class CompanyController extends Controller
 
     public function registration(Request $request)
     {
-        $request->validate([
-            'email' => 'email|unique:companies,email'
-        ]);
-        if (Company::create($request->all())) {
-            session()->flash('res', ['type' => 'success', 'message' => 'Created successfully, Login to continue']);
-            return redirect('login');
-        } else {
-            return redirect()->back()->with('res', ['type' => 'danger', 'message' => 'Give valid informations']);
+        $image = $request->file('pic')->store('');
+        $reg = [
+            "name"=>$request->name
+            ,"email"=>$request->email
+            ,"phone"=>$request->phone
+            ,"location_id"=>$request->location_id
+            ,"password"=>$request->password
+            ,"image"=>$image
+        ];
+        if (Company::where('email',$request->email)->first()) {
+            return redirect()->back()->with('res', ['type' => 'danger', 'message' => 'Email must be unique']);
+        }
+        else{
+            if (Company::create($reg)) {
+                session()->flash('res', ['type' => 'success', 'message' => 'Created successfully, Login to continue']);
+                return redirect('login');
+            } else {
+                return redirect()->back()->with('res', ['type' => 'danger', 'message' => 'Give valid informations']);
+            }
         }
     }
 
@@ -131,12 +142,12 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         // return json_encode($company->location, JSON_PRETTY_PRINT);
-        return view('company.edit',['company'=>$company,'locations'=>Location::all()]);
+        return view('company.edit', ['company' => $company, 'locations' => Location::all()]);
     }
     public function adminEditCompnay($id)
     {
         $company = Company::where('id', $id)->with('location')->first();
-        return view('admin.company.edit', ['company' => $company,'locations'=>Location::all()]);
+        return view('admin.company.edit', ['company' => $company, 'locations' => Location::all()]);
     }
 
     /**

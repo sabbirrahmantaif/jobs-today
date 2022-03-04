@@ -10,6 +10,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TitleController;
 use App\Http\Controllers\UserController;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -99,7 +100,7 @@ Route::get('registration', function () {
     if (Session::get('company')) {
         return redirect()->back();
     } else {
-        return view('company.registration');
+        return view('company.registration',['locations'=>Location::all()]);
     }
 });
 Route::post('registration', [CompanyController::class, 'registration']);

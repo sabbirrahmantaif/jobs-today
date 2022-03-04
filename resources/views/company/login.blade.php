@@ -23,17 +23,14 @@
                                         <label class="font-weight-semibold" for="email">Email:</label>
                                         <div class="input-affix">
                                             <i class="prefix-icon anticon anticon-user"></i>
-                                            <input type="text" class="form-control" id="email" placeholder="Email"
-                                                name="email">
+                                            <input type="text" class="form-control" id="email" placeholder="Email" name="email">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="font-weight-semibold" for="password">Password:</label>
-                                        {{-- <a class="float-right font-size-13 text-muted" href="#">Forget Password?</a> --}}
                                         <div class="input-affix m-b-10">
                                             <i class="prefix-icon anticon anticon-lock"></i>
-                                            <input type="password" class="form-control" id="password"
-                                                placeholder="Password" name="password" value="password">
+                                            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
                                         </div>
                                     </div>
                                     <div class="form-group">

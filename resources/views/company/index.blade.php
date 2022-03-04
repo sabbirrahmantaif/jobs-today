@@ -13,9 +13,6 @@
                                     <img src="{{asset('storage/app/'.session('company')['image'])}}" alt="">
                                 </div>
                             @else
-                                {{-- <div class="avatar avatar-icon" style="width: 150px; height:150px">
-                                    <i class="anticon anticon-user"></i>
-                                </div> --}}
                                 <div class="avatar avatar-icon avatar-lg">
                                     <i class="anticon anticon-user"></i>
                                 </div>
@@ -23,9 +20,6 @@
                         </div>
                         <div class="text-center text-sm-left m-v-15 p-l-30">
                             <h2 class="m-b-5">{{ session('company')['name'] }}</h2>
-                            {{-- <p class="text-opacity font-size-13">@Marshallnich</p> --}}
-                            {{-- <p class="text-dark m-b-20">Frontend Developer, UI/UX Designer</p> --}}
-                            {{-- <button class="btn btn-primary btn-tone">Contact</button> --}}
                         </div>
                     </div>
                 </div>
