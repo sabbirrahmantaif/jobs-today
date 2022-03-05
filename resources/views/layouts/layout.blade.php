@@ -28,6 +28,7 @@
     <!-- page js -->
     <script src="{{asset('assets/vendors/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/vendors/datatables/dataTables.bootstrap.min.js')}}"></script>
+    @yield('page-js')
     <script>
         $('#data-table').DataTable();
     </script>

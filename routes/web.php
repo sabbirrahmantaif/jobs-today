@@ -78,6 +78,9 @@ Route::group(['prefix' => 'admin'], function () {
 
         // applications
         Route::get('applications',[ApplicationController::class,'index']);
+
+        // chats
+        Route::view('chat','admin.chat.chat');
     });
 });
 
