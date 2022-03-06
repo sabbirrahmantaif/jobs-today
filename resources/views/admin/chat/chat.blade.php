@@ -3,7 +3,7 @@
 @section('main-content')
 @section('chats.chat', 'class=active')
 @if (Session::has('alert'))
-<div class="alert alert-{{ session('alert') }}">{{ session('res') }}</div>
+    <div class="alert alert-{{ session('alert') }}">{{ session('res') }}</div>
 @endif
 <div class="container-fluid p-h-0">
     <div class="chat chat-app row">
@@ -28,7 +28,7 @@
                 </a> --}}
             </div>
         </div>
-        <div class="chat-content">
+        <div class="chat-content" id="chat-content">
             <div class="conversation">
                 <div class="conversation-wrapper">
                     <div class="conversation-header justify-content-between">
@@ -93,114 +93,110 @@
     </div>
 </div>
 
-@section('page-js')
-{{-- <script src="{{asset('assets/js/pages/chat.js')}}"></script> --}}
-
-@endsection
-
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-<script type="text/javascript" language="javascript">
-    // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
-    // import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+@section('page-js')
+    <script type="text/javascript" language="javascript">
+        const firebaseConfig = {
+            apiKey: "AIzaSyBjk3WDM6NG3qdNefa6IWhOYjA0NrGGIFs",
+            authDomain: "jobs-today-cac62.firebaseapp.com",
+            projectId: "jobs-today-cac62",
+            storageBucket: "jobs-today-cac62.appspot.com",
+            messagingSenderId: "729419913211",
+            appId: "1:729419913211:web:96900c005675cb677c1d5e",
+            measurementId: "G-PC911EDNKS"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+        const docRef = db.collection('chats')
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBjk3WDM6NG3qdNefa6IWhOYjA0NrGGIFs",
-      authDomain: "jobs-today-cac62.firebaseapp.com",
-      projectId: "jobs-today-cac62",
-      storageBucket: "jobs-today-cac62.appspot.com",
-      messagingSenderId: "729419913211",
-      appId: "1:729419913211:web:96900c005675cb677c1d5e",
-      measurementId: "G-PC911EDNKS"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    var db = firebase.firestore();
-    const docRef = db.collection('chats')
-    var chats = [];
-
-    function enterChat(id) {
-        document.getElementById("chat-input").value = '';
-        const chat = chats.find(chat=>chat.id==id).data
-        let messages = ``;
-        chat.messages.map(message => {
-            if (message.sent_by === 'admin') {
-                messages += `<div class="msg msg-sent">
-                                <div class="bubble">
-                                    <div class="bubble-wrapper">
-                                        <span>${message.message}</span>
-                                    </div>
-                                </div>
-                            </div>`;
-            }else if (message.sent_by === 'user'){
-                messages += `<div class="msg msg-recipient">
-                                <div class="bubble">
-                                    <div class="bubble-wrapper">
-                                        <span>${message.message}</span>
-                                    </div>
-                                </div>
-                            </div>`;
-            }
-        })
-
-        document.getElementById("user-image").src = `{{asset("storage/app")}}/${chat.user.image}`
-        document.getElementById("user-name").innerText = chat.user.name
-        document.getElementById("conversation-body").innerHTML = messages
-
-        var old_element = document.getElementById("chat-submit-button");
-        var new_element = old_element.cloneNode(true);
-        old_element.parentNode.replaceChild(new_element, old_element);
-        document.getElementById("chat-submit-button").addEventListener("click",() => sendMessage(id))
-    }
-
-    function sendMessage(id) {
-        const chatInput = document.getElementById("chat-input").value;
-        if (chatInput.length>0) {
-            const chat = chats.find(chat=>chat.id==id).data
-            docRef.doc(id).update({
-                messages:[
-                    ...chat.messages,
-                    {
-                        sent_by:"admin",
-                        message:chatInput,
-                        created_at:new Date().toLocaleString()
-                    }
-                ]
-            })
-            .then(() => {
-                console.log("Document successfully written!");
+        function enterChat(id) {
+            document.querySelector(".chat-content").classList.add('open');
+            docRef.doc(String(id)).onSnapshot(snapshot => {
                 document.getElementById("chat-input").value = '';
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
-        }
-    }
+                document.getElementById("conversation-body").innerHTML = '';
+                snapshot.data().messages.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(
+                    message => {
+                        if (message.sent_by === 'admin') {
+                            return document.getElementById("conversation-body").innerHTML += `<div class="msg msg-sent">
+                                <div class="bubble">
+                                    <div class="bubble-wrapper">
+                                        <span>${message.message}</span>
+                                    </div>
+                                </div>
+                            </div>`;
+                        } else if (message.sent_by === 'user') {
+                            return document.getElementById("conversation-body").innerHTML += `<div class="msg msg-recipient">
+                                <div class="bubble">
+                                    <div class="bubble-wrapper">
+                                        <span>${message.message}</span>
+                                    </div>
+                                </div>
+                            </div>`
+                        }
+                    })
+                document.getElementById("user-image").src =
+                    `{{ asset('storage/app/${snapshot.data().user.image}') }}`
+                document.getElementById("user-name").innerHTML = snapshot.data().user.name
 
-    function showingUserList() {
-        document.querySelector('#chat-user-list').innerHTML = '';
-        docRef.onSnapshot(async (snapshot) => {
-            snapshot.forEach(async (doc) => {
-                chats.push({id:doc.id,data:doc.data()})
-                document.querySelector('#chat-user-list').innerHTML += `<a class="chat-list-item p-h-25" onClick="enterChat(${doc.id})">
+                var old_element = document.getElementById("chat-submit-button");
+                var new_element = old_element.cloneNode(true);
+                old_element.parentNode.replaceChild(new_element, old_element);
+                document.getElementById("chat-submit-button").addEventListener("click", () => sendMessage(id))
+            })
+
+        }
+
+        async function sendMessage(id) {
+            // alert(id)
+            const chatInput = document.getElementById("chat-input").value;
+            if (chatInput.length > 0) {
+                const chat = await docRef.doc(String(id)).get();
+                await docRef.doc(String(id)).update({
+                    last_message: new Date().toLocaleString(),
+                    messages: [
+                        ...chat.data().messages,
+                        {
+                            created_at: new Date().toLocaleString(),
+                            message: chatInput,
+                            sent_by: 'admin'
+                        }
+                    ]
+                })
+            }
+        }
+
+        function showingUserList() {
+            var chats = [];
+            docRef.orderBy('last_message', 'desc').onSnapshot(async (snapshot) => {
+                document.querySelector('#chat-user-list').innerHTML = '';
+                snapshot.forEach(async (doc) => {
+                    chats.push({
+                        id: doc.id,
+                        data: doc.data()
+                    })
+                    document.querySelector('#chat-user-list').innerHTML += `
+                <a class="chat-list-item p-h-25" href="javascript:void(0);" onClick="enterChat(${doc.id})">
                     <div class="media align-items-center">
                         <div class="avatar avatar-image">
-                            <img src="{{asset("storage/app")}}/${doc.data().user.image}" alt="">
+                            <img src="{{ asset('storage/app/${doc.data().user.image}') }}" alt="">
                         </div>
                         <div class="p-l-15">
                             <h5 class="m-b-0">${doc.data().user.name}</h5>
+                            <p class="msg-overflow m-b-0 text-muted font-size-13">
+                                ${doc.data().messages[doc.data().messages.length-1].message}
+                            </p>
                         </div>
                     </div>
                 </a>`;
-            });
-            enterChat(chats[chats.length-2].id)
-        })
-    }
+                });
+                // enterChat(chats[0].id)
+            })
+        }
 
-    showingUserList()
-
-</script>
+        showingUserList()
+    </script>
+    <script src="{{ asset('assets/js/pages/chat.js') }}"></script>
+@endsection
 @endsection
