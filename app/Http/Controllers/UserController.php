@@ -73,17 +73,17 @@ class UserController extends Controller
         try {
             $user = User::where(["email" => $req->email, "password" => $req->password])->first();
             if ($user) {
-                if ($user->approvement) {
+                // if ($user->approvement) {
                     return [
                         "status" => 200,
                         "data" => $user
                     ];
-                } else {
-                    return [
-                        "status" => 500,
-                        "data" => "User not approved yet"
-                    ];
-                }
+                // } else {
+                //     return [
+                //         "status" => 500,
+                //         "data" => "User not approved yet"
+                //     ];
+                // }
             } else {
                 return [
                     "status" => 404,

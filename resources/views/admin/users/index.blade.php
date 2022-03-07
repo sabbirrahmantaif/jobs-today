@@ -18,7 +18,7 @@
                         <th>Phone</th>
                         <th>Gender</th>
                         <th></th>
-                        <th></th>
+                        {{-- <th></th> --}}
                         <th></th>
                         <th></th>
                     </tr>
@@ -33,13 +33,13 @@
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->gender }}</td>
                             <td><a href="{{ url('admin/users/cv', $user->id) }}">CV</a></td>
-                            @if ($user->approvement)
+                            {{-- @if ($user->approvement)
                                 <td><a href="{{ url('admin/users/status', $user->id) }}"><button
                                             class="btn btn-sm btn-success">Disapprove</button></a></td>
                             @else
                                 <td><a href="{{ url('admin/users/status', $user->id) }}"><button
                                             class="btn btn-sm btn-info">Approve</button></a></td>
-                            @endif
+                            @endif --}}
                             <td><a href="{{ url('admin/users/edit', $user->id) }}"><button
                                         class="btn btn-sm btn-warning">Edit</button></a></td>
                             <form action="{{ url('admin/users/delete', $user->id) }}" method="post">
