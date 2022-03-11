@@ -8,6 +8,20 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function highlight_user($id)
+    {
+        $user = User::where('id',$id)->first();
+        $user->highlight = !$user->highlight;
+        if ($user->save()) {
+            return ['data'=>'success'];
+        }
+    }
+
+    public function highighted_user()
+    {
+        return ["status"=>200,"data"=>User::where("highlight",true)->get()];
+    }
+
     public function show_cv($id)
     {
         $userWithCv = User::where('id', $id)->with('cv')->first();

@@ -116,13 +116,14 @@
             docRef.doc(String(id)).onSnapshot(snapshot => {
                 document.getElementById("chat-input").value = '';
                 document.getElementById("conversation-body").innerHTML = '';
-                snapshot.data().messages.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(
+                snapshot.data().messages.sort((a, b) => b.created_at - a.created_at).map(
                     message => {
                         if (message.sent_by === 'admin') {
                             return document.getElementById("conversation-body").innerHTML += `<div class="msg msg-sent">
                                 <div class="bubble">
                                     <div class="bubble-wrapper">
                                         <span>${message.message}</span>
+                                        <span class="d-none">${message.created_at}</span>
                                     </div>
                                 </div>
                             </div>`;

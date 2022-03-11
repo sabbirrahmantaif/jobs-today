@@ -28,6 +28,7 @@ Route::post('/registration',[UserController::class,'registration']);
 Route::post('/login',[UserController::class,'login']);
 Route::post('/update-profile',[UserController::class,'update_profile']);
 Route::post('/update-image',[UserController::class,'update_image']);
+Route::get("highighted_user",[UserController::class,'highighted_user']);
 
 // job controller with job model
 Route::post('/hot-jobs',[JobController::class,'hot_jobs']);

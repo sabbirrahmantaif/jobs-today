@@ -75,6 +75,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('users/delete/{id}',[UserController::class,'delete']);
         Route::get('users/status/{id}',[UserController::class,'status']);
         Route::get('users/cv/{id}',[UserController::class,'show_cv']);
+        Route::get('users/highlight/{id}',[UserController::class,'highlight_user']);
 
         // applications
         Route::get('applications',[ApplicationController::class,'index']);
