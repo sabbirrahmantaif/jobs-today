@@ -37,15 +37,11 @@
                                 class="chat-close m-r-20 d-md-none d-block text-dark font-size-18 m-t-5">
                                 <i class="anticon anticon-left-circle"></i>
                             </a>
-                            <div class="avatar avatar-image">
+                            <div class="avatar avatar-image d-none">
                                 <img id="user-image" src="" alt="">
                             </div>
                             <div class="p-l-15">
                                 <h6 class="m-b-0" id="user-name"></h6>
-                                <p class="m-b-0 text-muted font-size-13 m-b-0">
-                                    <span class="badge badge-success badge-dot m-r-5"></span>
-                                    <span>Online</span>
-                                </p>
                             </div>
                         </div>
                         <div class="dropdown dropdown-animated scale-left">
@@ -137,6 +133,7 @@
                             </div>`
                         }
                     })
+                    document.getElementById("user-image").parentElement.classList.remove("d-none")
                 document.getElementById("user-image").src =
                     `{{ asset('storage/app/${snapshot.data().user.image}') }}`
                 document.getElementById("user-name").innerHTML = snapshot.data().user.name
@@ -145,8 +142,10 @@
                 var new_element = old_element.cloneNode(true);
                 old_element.parentNode.replaceChild(new_element, old_element);
                 document.getElementById("chat-submit-button").addEventListener("click", () => sendMessage(id))
+                if (document.getElementById("conversation-body").innerHTML !== null) {
+                    document.getElementById("conversation-body").scrollTop = document.getElementById("conversation-body").scrollHeight
+                }
             })
-
         }
 
         async function sendMessage(id) {

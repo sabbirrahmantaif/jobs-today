@@ -10,22 +10,22 @@ class UserController extends Controller
 {
     public function highlight_user($id)
     {
-        $user = User::where('id',$id)->first();
+        $user = User::where('id', $id)->first();
         $user->highlight = !$user->highlight;
         if ($user->save()) {
-            return ['data'=>'success'];
+            return ['data' => 'success'];
         }
     }
 
     public function highighted_user()
     {
-        return ["status"=>200,"data"=>User::where("highlight",true)->get()];
+        return ["status" => 200, "data" => User::where("highlight", true)->get()];
     }
 
     public function show_cv($id)
     {
         $userWithCv = User::where('id', $id)->with('cv')->first();
-        return view('admin.users.cv', ['user'=> $userWithCv]);
+        return view('admin.users.cv', ['user' => $userWithCv]);
     }
 
     public function update(Request $request)
@@ -88,10 +88,10 @@ class UserController extends Controller
             $user = User::where(["email" => $req->email, "password" => $req->password])->first();
             if ($user) {
                 // if ($user->approvement) {
-                    return [
-                        "status" => 200,
-                        "data" => $user
-                    ];
+                return [
+                    "status" => 200,
+                    "data" => $user
+                ];
                 // } else {
                 //     return [
                 //         "status" => 500,
@@ -142,7 +142,9 @@ class UserController extends Controller
         $response = array();
         try {
             $user = User::find($req->id);
-            Storage::delete($user->image);
+            if ($user->image !== "user-avatar.png") {
+                Storage::delete($user->image);
+            }
             $file = $req->file('image')->store('');
             $user->update(["image" => $file]);
             if ($user) {
