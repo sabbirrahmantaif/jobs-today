@@ -96,6 +96,7 @@ Route::group(['middleware' => 'company'], function () {
         return redirect()->back();
     });
     Route::resource('job', JobController::class);
+    Route::post('job/{id}/update', [JobController::class,'update']);
     Route::get('/job/{id}/applications',[ApplicationController::class,'job_applications']);
     Route::get('cv/{id}',[CVController::class,'show']);
 });

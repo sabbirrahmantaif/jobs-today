@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
-use App\Http\Requests\StoreJobRequest;
-use App\Http\Requests\UpdateJobRequest;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Location;
 use App\Models\Title;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
@@ -146,7 +143,7 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        //
+        return view('company.job.edit',['job' => $job,'titles'=>Title::all(),'categories'=>Category::all()]);
     }
 
     /**
@@ -156,9 +153,23 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateJobRequest $request, Job $job)
+    public function update(Request $request)
     {
-        //
+        $job = Job::where('id',$request->id)->first();
+        $job->title_id = $request->title_id;
+        $job->category_id = $request->category_id;
+        $job->position = $request->position;
+        $job->vacancy = $request->vacancy;
+        $job->deadline = $request->deadline;
+        $job->salary = $request->salary;
+        $job->description = $request->description;
+        $job->nature = $request->nature;
+        $job->education = $request->education;
+        $job->experience = $request->experience;
+        $job->requirements = $request->requirements;
+        $job->other_benefits = $request->other_benefits;
+        $job->save();
+        return back()->with("res",["type"=>"success","message"=>"updated successfully"]);
     }
 
     /**

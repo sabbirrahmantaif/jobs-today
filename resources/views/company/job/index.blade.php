@@ -18,20 +18,12 @@
                         <thead>
                             <tr>
                                 <th>position</th>
-                                {{-- <th>location</th>
-                                <th>title</th>
-                                <th>category</th> --}}
                                 <th>vacancy</th>
                                 <th>deadline</th>
                                 <th>salary</th>
-                                {{-- <th>description</th> --}}
-                                {{-- <th>nature</th> --}}
                                 <th>education</th>
                                 <th>experience</th>
                                 <th>requirements</th>
-                                {{-- <th>other_benefits</th> --}}
-                                {{-- <th>created_at</th>
-                                <th>updated_at</th> --}}
                                 <th></th>
                             </tr>
                         </thead>
@@ -39,21 +31,17 @@
                             @foreach ($company->jobs as $job)
                                 <tr>
                                     <td>{{ $job->position }}</td>
-                                    {{-- <td>{{ $job->location }}</td>
-                                    <td>{{ $job->title }}</td>
-                                    <td>{{ $job->category }}</td> --}}
                                     <td>{{ $job->vacancy }}</td>
                                     <td>{{ $job->deadline }}</td>
                                     <td>{{ $job->salary }}</td>
-                                    {{-- <td>{{ $job->description }}</td> --}}
-                                    {{-- <td>{{ $job->nature }}</td> --}}
                                     <td>{{ $job->education }}</td>
                                     <td>{{ $job->experience }}</td>
                                     <td>{{ $job->requirements }}</td>
-                                    {{-- <td>{{ $job->other_benefits }}</td> --}}
-                                    {{-- <td>{{ $job->created_at }}</td>
-                                    <td>{{ $job->updated_at }}</td> --}}
-                                    <td><a href="{{url('job/'.$job->id.'/applications')}}">Applications</a></td>
+                                    <td>
+                                        <a href="{{url('job/'.$job->id.'/edit')}}">Edit</a>
+                                        |
+                                        <a href="{{url('job/'.$job->id.'/applications')}}">Applications</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
